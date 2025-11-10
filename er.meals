@@ -1,0 +1,25 @@
+=> 
+[[32m#<Review:0x00005639005fc9b0[0m
+  id: [34m[1m6[0m,
+  user_id: [34m[1m1[0m,
+  meal_id: [34m[1m10[0m,
+  rating: [34m[1m1[0m,
+  comment:
+   [31m[1m"[0m[31mThick slices of French toast bread, brown sugar, half-and-half and vanilla, topped with powdered sugar. With two eggs served any style, and your choice of smoked bacon or smoked ham.[0m[31m[1m"[0m,
+  helpful_count: [36m[1mnil[0m,
+  created_at:
+   Mon, 10 Nov 2025 19:36:13.208962000 UTC +00:00,
+  updated_at:
+   Mon, 10 Nov 2025 19:36:13.208962000 UTC +00:00[32m>[0m,
+ [32m#<Review:0x00005639005fc438[0m
+  id: [34m[1m8[0m,
+  user_id: [34m[1m1[0m,
+  meal_id: [34m[1m8[0m,
+  rating: [34m[1m4[0m,
+  comment:
+   [31m[1m"[0m[31mFresh parsley, Italian sausage, shallots, garlic, sun-dried tomatoes and mozzarella cheese in an all-butter crust. With a side of mixed fruits.[0m[31m[1m"[0m,
+  helpful_count: [36m[1mnil[0m,
+  created_at:
+   Mon, 10 Nov 2025 19:36:13.222445000 UTC +00:00,
+  updated_at:
+   Mon, 10 Nov 2025 19:36:13.222445000 UTC +00:00[32m>[0m]

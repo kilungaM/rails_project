@@ -1,0 +1,19 @@
+<h1>All Ingredients</h1>
+
+<div class="row">
+  <% @ingredients.each do |ingredient| %>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title"><%= ingredient.name %></h5>
+          <p class="text-muted"><%= ingredient.meals.count %> recipes</p>
+          <%= link_to "View Recipes", ingredient_path(ingredient), class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="text-center mt-4">
+  <%= paginate @ingredients %>
+</div>

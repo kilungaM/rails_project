@@ -1,0 +1,23 @@
+<h1><%= @ingredient.name %></h1>
+<p class="lead">Used in <%= @meals.total_count %> recipes</p>
+
+<div class="row">
+  <% @meals.each do |meal| %>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <%= image_tag meal.thumb_url, class: "card-img-top", alt: meal.name if meal.thumb_url %>
+        <div class="card-body">
+          <h5 class="card-title"><%= meal.name %></h5>
+          <p class="card-text">
+            <span class="badge bg-secondary"><%= meal.category.name %></span>
+          </p>
+          <%= link_to "View Recipe", meal_path(meal), class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="text-center mt-4">
+  <%= paginate @meals %>
+</div>

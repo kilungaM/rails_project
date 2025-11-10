@@ -1,0 +1,21 @@
+<h1><%= @user.name %></h1>
+<p class="lead"> <%= @user.location %></p>
+<p><%= @user.email %></p>
+<p class="text-muted"><%= @reviews.count %> reviews written</p>
+
+<h3 class="mt-4">Reviews</h3>
+
+<% @reviews.each do |review| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">
+        <%= link_to review.meal.name, meal_path(review.meal) %>
+        <span class="float-end">
+          <% review.rating.times do %><% end %>
+        </span>
+      </h5>
+      <p class="card-text"><%= review.comment %></p>
+      <p class="text-muted small"> <%= review.helpful_count %> helpful</p>
+    </div>
+  </div>
+<% end %>

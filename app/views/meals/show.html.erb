@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-md-6">
+    <%= image_tag @meal.thumb_url, class: "img-fluid rounded", alt: @meal.name if @meal.thumb_url %>
+  </div>
+  <div class="col-md-6">
+    <h1><%= @meal.name %></h1>
+    <p>
+      <span class="badge bg-secondary"><%= link_to @meal.category.name, category_path(@meal.category), class: "text-white text-decoration-none" %></span>
+      <span class="badge bg-info"><%= @meal.area %></span>
+    </p>
+
+    <% if @meal.review_count > 0 %>
+      <h4> <%= @meal.average_rating %> / 5.0</h4>
+      <p class="text-muted"><%= @meal.review_count %> reviews</p>
+    <% end %>
+
+    <% if @meal.video_url.present? %>
+      <p>
+        <%= link_to "Watch Video Tutorial", @meal.video_url, class: "btn btn-danger", target: "_blank" %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <h3>Ingredients</h3>
+    <ul class="list-group">
+      <% @meal.meal_ingredients.includes(:ingredient).each do |mi| %>
+        <li class="list-group-item">
+          <%= link_to mi.ingredient.name, ingredient_path(mi.ingredient) %>
+          <% if mi.measurement.present? %>
+            <span class="badge bg-light text-dark float-end"><%= mi.measurement %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="col-md-8">
+    <h3>Instructions</h3>
+    <p class="text-justify"><%= simple_format(@meal.instructions) %></p>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-12">
+    <h3>User Reviews (<%= @meal.reviews.count %>)</h3>
+    <% if @meal.reviews.any? %>
+      <% @meal.reviews.order(helpful_count: :desc).limit(10).each do |review| %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to review.user.name, user_path(review.user) %>
+              <span class="float-end">
+                <% review.rating.times do %><% end %>
+              </span>
+            </h5>
+            <p class="card-text"><%= review.comment %></p>
+            <p class="text-muted small">
+               <%= review.helpful_count %> people found this helpful
+            </p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-muted">No reviews yet.</p>
+    <% end %>
+  </div>
+</div>

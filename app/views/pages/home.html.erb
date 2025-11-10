@@ -1,0 +1,51 @@
+<div class="text-center mb-5">
+  <h1 class="display-4"> Welcome to Recipe Food App</h1>
+  <p class="lead">Discover delicious meals from around the world!</p>
+  <div class="mt-4">
+    <%= link_to "Browse All Meals", meals_path, class: "btn btn-primary btn-lg me-2" %>
+    <%= link_to "Search Recipes", search_meals_path, class: "btn btn-outline-primary btn-lg" %>
+  </div>
+</div>
+
+<div class="row text-center mb-5">
+  <div class="col-md-4">
+    <h3><%= @total_meals %></h3>
+    <p>Delicious Recipes</p>
+  </div>
+  <div class="col-md-4">
+    <h3><%= @categories.count %></h3>
+    <p>Categories</p>
+  </div>
+  <div class="col-md-4">
+    <h3><%= @total_reviews %></h3>
+    <p>User Reviews</p>
+  </div>
+</div>
+
+<h2 class="mb-4">Featured Meals</h2>
+<div class="row">
+  <% @featured_meals.each do |meal| %>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <%= image_tag meal.thumb_url, class: "card-img-top", alt: meal.name if meal.thumb_url %>
+        <div class="card-body">
+          <h5 class="card-title"><%= meal.name %></h5>
+          <p class="card-text">
+            <span class="badge bg-secondary"><%= meal.category.name %></span>
+            <span class="badge bg-info"><%= meal.area %></span>
+          </p>
+          <% if meal.review_count > 0 %>
+            <p class="card-text">
+               <%= meal.average_rating %> (<%= meal.review_count %> reviews)
+            </p>
+          <% end %>
+          <%= link_to "View Recipe", meal_path(meal), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="text-center mt-4">
+  <%= link_to "View All Meals →", meals_path, class: "btn btn-lg btn-outline-primary" %>
+</div>

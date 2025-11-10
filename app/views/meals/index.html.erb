@@ -1,0 +1,28 @@
+<h1>All Meals</h1>
+
+<div class="row">
+  <% @meals.each do |meal| %>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <%= image_tag meal.thumb_url, class: "card-img-top", alt: meal.name if meal.thumb_url %>
+        <div class="card-body">
+          <h5 class="card-title"><%= meal.name %></h5>
+          <p class="card-text">
+            <span class="badge bg-secondary"><%= meal.category.name %></span><br>
+            <span class="badge bg-info"><%= meal.area %></span>
+          </p>
+          <% if meal.review_count > 0 %>
+            <p class="text-muted small">
+             <%= meal.average_rating %> (<%= meal.review_count %>)
+            </p>
+          <% end %>
+          <%= link_to "View Recipe", meal_path(meal), class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="text-center mt-4">
+  <%= paginate @meals %>
+</div>

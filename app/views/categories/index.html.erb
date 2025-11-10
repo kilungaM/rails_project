@@ -1,0 +1,17 @@
+<h1>All Categories</h1>
+
+<div class="row">
+  <% @categories.each do |category| %>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <%= image_tag category.thumb_url, class: "card-img-top", alt: category.name if category.thumb_url %>
+        <div class="card-body">
+          <h5 class="card-title"><%= category.name %></h5>
+          <p class="card-text"><%= truncate(category.description, length: 100) %></p>
+          <p class="text-muted"><%= category.meals.count %> meals</p>
+          <%= link_to "View Meals", category_path(category), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
