@@ -7,10 +7,14 @@ class PagesController < ApplicationController
   end
 
   def about
+    # Database counts
     @categories = Category.count
     @meals = Meal.count
     @ingredients = Ingredient.count
     @users = User.count
     @reviews = Review.count
+
+    # Only meals with coordinates for mapping
+    @meals_with_coords = Meal.where.not(latitude: nil, longitude: nil)
   end
 end

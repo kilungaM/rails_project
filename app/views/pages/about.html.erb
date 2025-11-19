@@ -1,45 +1,119 @@
-<h1>About This Project</h1>
+<div class="container mt-4">
 
-<div class="card mb-4">
-  <div class="card-body">
-    <h3>Dataset Description (Feature 1.1)</h3>
-
-    <h4>Data Sources</h4>
-    <ol>
-      <li>
-        <strong>TheMealDB API</strong> (https://www.themealdb.com/api.php)
-        <p>A free API providing recipe data including meal names, categories, areas/cuisines, cooking instructions, ingredient lists, and images.</p>
-      </li>
-      <li>
-        <strong>Faker Gem</strong>
-        <p>Generates realistic fake data for users and their reviews of meals.</p>
-      </li>
-    </ol>
-
-    <h4>Database Structure</h4>
-    <ul>
-      <li><strong>Meals Table:</strong> Stores recipe data from TheMealDB (name, instructions, images, videos)</li>
-      <li><strong>Categories Table:</strong> Recipe categories (Seafood, Chicken, Beef, etc.)</li>
-      <li><strong>Ingredients Table:</strong> Individual ingredients used in recipes</li>
-      <li><strong>Users Table:</strong> Fake users generated with Faker</li>
-      <li><strong>Reviews Table:</strong> User reviews with ratings and comments (Faker data)</li>
-      <li><strong>MealIngredients Table:</strong> Join table linking meals and ingredients with measurements</li>
-    </ul>
-
-    <h4>Data Integration</h4>
-    <p>Meals from TheMealDB are categorized and linked to their ingredients through a many-to-many relationship. Faker generates fictional users who provide ratings and reviews for the meals, creating authentic-looking user engagement data.</p>
+  <div class="row">
+    <div class="col-12">
+      <h1>About The Project</h1>
+    </div>
   </div>
+
+  <!-- Dataset & Structure Section -->
+  <div class="row mt-3">
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3>Dataset Description (Feature 1.1)</h3>
+
+          <h4>Data Sources</h4>
+          <ol>
+            <li>
+              <strong>TheMealDB API</strong>
+              <p>A free API providing recipe data including meal names, categories, areas/cuisines, cooking instructions, ingredient lists, and images.</p>
+            </li>
+            <li>
+              <strong>Faker Gem</strong>
+              <p>Generates realistic fake data for users and their reviews of meals.</p>
+            </li>
+          </ol>
+
+          <h4>Database Structure</h4>
+          <ul>
+            <li><strong>Meals Table:</strong> Stores recipe data (name, instructions, images, videos, latitude, longitude)</li>
+            <li><strong>Categories Table:</strong> Recipe categories</li>
+            <li><strong>Ingredients Table:</strong> Individual ingredients used in recipes</li>
+            <li><strong>Users Table:</strong> Fake users generated with Faker</li>
+            <li><strong>Reviews Table:</strong> Ratings and comments left by users</li>
+            <li><strong>MealIngredients Table:</strong> Connects meals and ingredients with measurements</li>
+          </ul>
+
+          <h4>Data Integration</h4>
+          <p>
+            Meals from TheMealDB are categorized and linked to their ingredients through a many-to-many relationship. Faker generates fictional users who provide ratings and reviews for the meals, creating authentic-looking user engagement data.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Database Statistics -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h3>Database Statistics</h3>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Categories: <strong><%= @categories %></strong></li>
+            <li class="list-group-item">Meals: <strong><%= @meals %></strong></li>
+            <li class="list-group-item">Ingredients: <strong><%= @ingredients %></strong></li>
+            <li class="list-group-item">Users: <strong><%= @users %></strong></li>
+            <li class="list-group-item">Reviews: <strong><%= @reviews %></strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Section -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card mt-4">
+        <div class="card-body">
+          <h3>Cuisine Origins Map </h3>
+          <p>This interactive map shows the geographic origins of all meals in our database, with markers color-coded by category.</p>
+
+          <div id="map" style="height: 500px; border-radius: 10px; border: 1px solid #ccc;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<div class="card">
-  <div class="card-body">
-    <h3>Database Statistics</h3>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Categories: <strong><%= @categories %></strong></li>
-      <li class="list-group-item">Meals: <strong><%= @meals %></strong></li>
-      <li class="list-group-item">Ingredients: <strong><%= @ingredients %></strong></li>
-      <li class="list-group-item">Users: <strong><%= @users %></strong></li>
-      <li class="list-group-item">Reviews: <strong><%= @reviews %></strong></li>
-    </ul>
-  </div>
-</div>
+<!-- Leaflet Map Script with Conditional Marker Colors -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var map = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Define colors by category
+    var categoryColors = {
+      "Seafood": "blue",
+      "Chicken": "orange",
+      "Beef": "red",
+      "Pasta": "purple",
+      "Vegetarian": "green",
+      "Dessert": "pink"
+    };
+
+    <% @meals_with_coords.each do |meal| %>
+      // Use category color or default if missing
+      var color = categoryColors["<%= meal.category.name %>"] || "gray";
+
+      var marker = L.circleMarker([<%= meal.latitude %>, <%= meal.longitude %>], {
+        color: color,
+        radius: 8,
+        fillOpacity: 0.7
+      }).addTo(map);
+
+      // Conditional popup: show video link if available
+      var popupContent = "<strong><%= meal.name %></strong><br>" +
+                         "<%= meal.area %><br>";
+      <% if meal.video_url.present? %>
+        popupContent += "<a href='<%= meal.video_url %>' target='_blank'>Video</a>";
+      <% end %>
+
+      marker.bindPopup(popupContent);
+    <% end %>
+  });
+</script>
